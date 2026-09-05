@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Good Catch! — A Cozy Fishing Game</title>
+<meta name="description" content="A relaxing fishing game about cozy fishing spots, rare catches, small quests and friendly characters you unlock along the way. By solo dev Iris." />
+<link rel="stylesheet" href="/src/styles/base.css" />
+<link rel="stylesheet" href="/src/styles/components.css" />
+</head>
+<body>
+
+<div class="preloader" id="preloader">
+  <div class="preloader__mark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#7c9333" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 12c3-5 7-7 11-7 3 0 5 1.5 7 3.5l-3 3.5 3 3.5c-2 2-4 3.5-7 3.5-4 0-8-2-11-7z" fill="#f0a93a" stroke="#7c9333"/>
+      <circle cx="8" cy="11" r="1" fill="#4a3c2e" stroke="none"/>
+    </svg>
+  </div>
+  <div class="preloader__bar"><span></span></div>
+</div>
+
+<div class="fish-pattern" aria-hidden="true"></div>
+
+<div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+
+<canvas id="bg-canvas"></canvas>
+<canvas id="companion-canvas"></canvas>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a href="#" class="logo">
+      <span class="logo__mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12c3-5 7-7 11-7 3 0 5 1.5 7 3.5l-3 3.5 3 3.5c-2 2-4 3.5-7 3.5-4 0-8-2-11-7z" fill="#f0a93a" stroke="#7c9333" stroke-width="1.5"/>
+          <circle cx="8" cy="11" r="1" fill="#4a3c2e"/>
+        </svg>
+      </span>
+      Good Catch!
+    </a>
+    <nav class="nav__links">
+      <span class="nav__indicator" aria-hidden="true"></span>
+      <a href="#features">Features</a>
+      <a href="#world">World</a>
+      <a href="#characters">Characters</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#studio">Studio</a>
+    </nav>
+    <a href="https://store.steampowered.com/app/4417620/Good_Catch/" target="_blank" rel="noopener" class="btn btn--primary btn--sm">Wishlist on Steam</a>
+    <button class="nav__burger" aria-label="Menu" id="nav-burger">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ============ CURTAIN NAV ============ -->
+<div class="curtain-nav" id="curtain-nav">
+  <div class="curtain-nav__links">
+    <a href="#features">Features<img src="/press/ss1.jpg" alt="" /></a>
+    <a href="#world">World<img src="/press/ss4.jpg" alt="" /></a>
+    <a href="#characters">Characters<img src="/press/ss6.jpg" alt="" /></a>
+    <a href="#gallery">Gallery<img src="/press/ss8.jpg" alt="" /></a>
+    <a href="#studio">Studio<img src="/press/header.jpg" alt="" /></a>
+  </div>
+</div>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero__content">
+        <div class="eyebrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Coming Q3 2026 · Demo Available
+        </div>
+        <h1 data-kinetic>Cast a line,<br>catch something <em>wonderful</em>.</h1>
+        <p>A relaxing fishing game about cozy fishing spots, rare catches, small quests, and friendly animal characters you unlock along the way.</p>
+        <div class="hero__actions">
+          <a href="https://store.steampowered.com/app/4417620/Good_Catch/" target="_blank" rel="noopener" class="btn btn--primary">
+            Wishlist on Steam
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="https://store.steampowered.com/app/4417620/Good_Catch/" target="_blank" rel="noopener" class="btn btn--ghost">Download Demo</a>
+        </div>
+        <div class="hero__meta">
+          <div class="review-badge">
+            <span class="dev-avatar">🎣</span>
+            <span>Made solo by Iris · MISK Games</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero__art" data-reveal>
+      <img src="/press/header.jpg" alt="Good Catch! key art" />
+      <div class="hero__sticker" id="hero-sticker"><span class="hero__sticker-inner">Solo<br>Dev ✨</span></div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <section class="marquee">
+    <div class="marquee__track">
+      <span>Cozy <em>·</em> Fishing <em>·</em> Creature Collector <em>·</em> Wholesome <em>·</em> Relaxing <em>·</em> Adventure <em>·</em> Casual <em>·</em></span>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow" style="justify-content:center;">What You'll Do</div>
+        <h2 data-kinetic>Everything about it is built to help you unwind</h2>
+        <p data-reveal>A chill loop of casting, exploring, and collecting — no timers, no pressure.</p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card" data-reveal data-reveal-group="features">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 12c0-3 2-9 5.5-9s5.5 6 5.5 9-2 9-5.5 9-5.5-6-5.5-9z"/></svg></div>
+          <h3>Chill Fishing Minigame</h3>
+          <p>Cast, wait for the tug, and reel it in — no stress, just a satisfying little rhythm.</p>
+        </div>
+        <div class="feature-card" data-reveal data-reveal-group="features">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1M2 12h20"/></svg></div>
+          <h3>Explore Fishing Spots</h3>
+          <p>Rivers, lakes, and more — each spot has its own vibe and its own fish to discover.</p>
+        </div>
+        <div class="feature-card" data-reveal data-reveal-group="features">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg></div>
+          <h3>Fun Little Quests</h3>
+          <p>Pick up orders around town and deliver the right catch for a tidy reward.</p>
+        </div>
+        <div class="feature-card" data-reveal data-reveal-group="features">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+          <h3>Skills, Rods & Bait</h3>
+          <p>Level up a small skill tree, upgrade your rod, and try different bait for different fish.</p>
+        </div>
+        <div class="feature-card" data-reveal data-reveal-group="features">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+          <h3>Discover Rare Fish</h3>
+          <p>Build a collection — most are common, but keep an eye out for the rare variants.</p>
+        </div>
+        <div class="feature-card" data-reveal data-reveal-group="features">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
+          <h3>Animal Buddies</h3>
+          <p>Unlock cute animal characters as you play — each one brings its own fishing ability.</p>
+        </div>
+        <div class="feature-card" data-reveal data-reveal-group="features">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></div>
+          <h3>Perfect Catches</h3>
+          <p>Time your reel just right for a perfect catch — extra rewards, extra energy back.</p>
+        </div>
+        <div class="feature-card" data-reveal data-reveal-group="features">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c4.97 0 9-3.58 9-8 0-2-1-4-3-5.5C16.5 6 15 4 12 2 9 4 7.5 6 6 8.5 4 10 3 12 3 14c0 4.42 4.03 8 9 8z"/></svg></div>
+          <h3>Zero Pressure</h3>
+          <p>No fail states to stress about — adjustable difficulty and no timed input required.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORLD SPLITS ============ -->
+  <section class="section section--tight" id="world">
+    <div class="container">
+      <div class="split" data-reveal>
+        <div class="split__media">
+          <img src="/press/ss1.jpg" alt="Fishing by the river bridge" loading="lazy" />
+        </div>
+        <div class="split__text">
+          <div class="eyebrow">Cast & Reel</div>
+          <h2 data-kinetic>Every cast has its own little rhythm</h2>
+          <p>Watch the bobber, wait for the bite, and reel it in with a gentle tug-of-war meter. It's simple on purpose — the point is to relax, not to chase a high score.</p>
+          <ul class="pill-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 12c0-3 2-9 5.5-9s5.5 6 5.5 9-2 9-5.5 9-5.5-6-5.5-9z"/></svg> Cozy Bite Timing</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> No Fail States</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg> Perfect Catch Bonus</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="split split--reverse" data-reveal>
+        <div class="split__media">
+          <img src="/press/ss4.jpg" alt="Skill tree and upgrades screen" loading="lazy" />
+        </div>
+        <div class="split__text">
+          <div class="eyebrow">Progression</div>
+          <h2 data-kinetic>A small skill tree, not a second job</h2>
+          <p>Spend the XP you earn on max energy, better gear, faster travel, and more — a light, readable progression system that never turns into homework.</p>
+          <ul class="pill-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1M2 12h20"/></svg> Rod Upgrades</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Bait Variety</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/></svg> Daily Orders</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHARACTERS (FLIP transition) ============ -->
+  <section class="section" id="characters">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow" style="justify-content:center;">Meet Your Buddies</div>
+        <h2 data-kinetic>Everyone brings their own fishing ability</h2>
+        <p data-reveal>Click a character to take a closer look. More are still being revealed before launch.</p>
+      </div>
+      <div class="char-grid" id="char-grid">
+        <button class="char-card" data-reveal data-reveal-group="chars" data-char="bear">
+          <div class="char-card__portrait">🐻</div>
+          <h3>Bear</h3>
+          <span class="char-card__tag">Unlocked</span>
+        </button>
+        <button class="char-card char-card--locked" data-reveal data-reveal-group="chars" data-char="locked1">
+          <div class="char-card__portrait">❔</div>
+          <h3>???</h3>
+          <span class="char-card__tag">Locked</span>
+        </button>
+        <button class="char-card char-card--locked" data-reveal data-reveal-group="chars" data-char="locked2">
+          <div class="char-card__portrait">❔</div>
+          <h3>???</h3>
+          <span class="char-card__tag">Locked</span>
+        </button>
+        <button class="char-card char-card--locked" data-reveal data-reveal-group="chars" data-char="locked3">
+          <div class="char-card__portrait">❔</div>
+          <h3>???</h3>
+          <span class="char-card__tag">Locked</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="char-focus" id="char-focus">
+    <div class="char-focus__backdrop"></div>
+  </div>
+
+  <!-- ============ SCREENSHOTS ============ -->
+  <section class="section" id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow" style="justify-content:center;">See It In Motion</div>
+        <h2 data-kinetic>A peek at the frontier's calmest corner</h2>
+      </div>
+      <div class="gallery">
+        <div class="gallery__item" data-reveal data-reveal-group="gallery"><img src="/press/ss2.jpg" alt="Good Catch! screenshot" loading="lazy" /></div>
+        <div class="gallery__item" data-reveal data-reveal-group="gallery"><img src="/press/ss3.jpg" alt="Good Catch! screenshot" loading="lazy" /></div>
+        <div class="gallery__item" data-reveal data-reveal-group="gallery"><img src="/press/ss5.jpg" alt="Good Catch! screenshot" loading="lazy" /></div>
+        <div class="gallery__item" data-reveal data-reveal-group="gallery"><img src="/press/ss7.jpg" alt="Good Catch! screenshot" loading="lazy" /></div>
+        <div class="gallery__item" data-reveal data-reveal-group="gallery"><img src="/press/ss9.jpg" alt="Good Catch! screenshot" loading="lazy" /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RIPPLE TILE DEMO ============ -->
+  <section class="section section--tight" id="pond">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow" style="justify-content:center;">Try It Yourself</div>
+        <h2 data-kinetic>Every catch sends a ripple through the pond</h2>
+        <p data-reveal>Hover to scout a tile. Click one to send a pulse rippling outward.</p>
+      </div>
+      <div class="pond-grid-wrap" data-reveal>
+        <div class="pond-grid" id="pond-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STUDIO ============ -->
+  <section class="section" id="studio">
+    <div class="container">
+      <div class="studio-card" data-reveal>
+        <div class="studio-card__avatar">🎣</div>
+        <div>
+          <div class="eyebrow">The Studio</div>
+          <h3>Made by MISK Games</h3>
+          <p>Good Catch! is built solo by Iris. "I just want to create something relaxing that you'll enjoy coming back to after a long day." First playtest: March 2026. Demo out now. Full release planned for Q3 2026.</p>
+          <div class="studio-card__links">
+            <a href="https://discord.gg/eXTDnZ6US8" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">Join the Discord</a>
+            <a href="https://x.com/iris_misk" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">Follow on X</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="final-cta" data-reveal>
+        <div class="eyebrow" style="justify-content:center;">Demo Available Now</div>
+        <h2 data-kinetic>Ready to cast your first line?</h2>
+        <p>Try the free demo, or wishlist now so you don't miss the full release in Q3 2026.</p>
+        <div class="final-cta__actions">
+          <a href="https://store.steampowered.com/app/4417620/Good_Catch/" target="_blank" rel="noopener" class="btn btn--primary">Wishlist on Steam</a>
+          <a href="https://store.steampowered.com/app/4417620/Good_Catch/" target="_blank" rel="noopener" class="btn btn--ghost">Download Demo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="logo">
+          <span class="logo__mark">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M3 12c3-5 7-7 11-7 3 0 5 1.5 7 3.5l-3 3.5 3 3.5c-2 2-4 3.5-7 3.5-4 0-8-2-11-7z" fill="#f0a93a" stroke="#7c9333" stroke-width="1.5"/>
+              <circle cx="8" cy="11" r="1" fill="#4a3c2e"/>
+            </svg>
+          </span>
+          Good Catch!
+        </div>
+        <p class="text-dim" style="margin-top:16px; max-width:32ch; font-size:14.5px;">A cozy fishing game by MISK Games. Cast, catch, collect, and unwind.</p>
+        <div class="footer__social">
+          <a href="https://discord.gg/eXTDnZ6US8" target="_blank" rel="noopener" aria-label="Discord"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 9a5 5 0 0 0-5-5H11a5 5 0 0 0-5 5v6a5 5 0 0 0 5 5h2a5 5 0 0 0 5-5z"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/></svg></a>
+          <a href="https://x.com/iris_misk" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+          <a href="https://bsky.app/profile/irismisk.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1"/></svg></a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>Game</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#world">World</a></li>
+          <li><a href="#characters">Characters</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="https://discord.gg/eXTDnZ6US8" target="_blank" rel="noopener">Discord</a></li>
+          <li><a href="https://x.com/iris_misk" target="_blank" rel="noopener">X / Twitter</a></li>
+          <li><a href="https://bsky.app/profile/irismisk.bsky.social" target="_blank" rel="noopener">Bluesky</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Store</h4>
+        <ul>
+          <li><a href="https://store.steampowered.com/app/4417620/Good_Catch/" target="_blank" rel="noopener">Wishlist on Steam</a></li>
+          <li><a href="https://store.steampowered.com/app/4417620/Good_Catch/" target="_blank" rel="noopener">Download Demo</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 MISK Games. Good Catch! and all related assets belong to their respective owner.</span>
+      <span>Fan-made concept site, built as a showcase.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="gallery__lightbox" id="lightbox">
+  <button data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  <button class="gallery__nav gallery__nav--prev" data-prev aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
+  <img src="" alt="Screenshot preview" />
+  <button class="gallery__nav gallery__nav--next" data-next aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6 6-6"/></svg></button>
+</div>
+
+<script type="module" src="/src/js/main.js"></script>
+</body>
+</html>
