@@ -170,6 +170,37 @@
 .gallery__nav--prev { left: 30px; }
 .gallery__nav--next { right: 30px; }
 
+/* ---------- UNDERWILD TILE DEMO ---------- */
+.underwild-grid-wrap {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 30px 60px -20px rgba(43, 36, 64, 0.45);
+}
+.underwild-grid {
+  position: relative;
+  height: 380px;
+  background: var(--c-ink);
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  transform: perspective(900px) rotateX(35deg) scale(1.08);
+  cursor: pointer;
+}
+.underwild-grid::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle, transparent 25%, var(--c-ink) 85%);
+  pointer-events: none;
+}
+.underwild-tile {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: background-color 0.35s;
+}
+.underwild-tile.is-pulsing { transition: background-color 0.28s; }
+@media (max-width: 900px) {
+  .underwild-grid { height: 260px; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(9, 1fr); }
+}
+
 /* ---------- WORLD / SPLIT SECTIONS ---------- */
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
 .split--reverse .split__media { order: 2; }

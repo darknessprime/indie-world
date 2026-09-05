@@ -5,6 +5,7 @@ import { initPreloader } from './preloader.js'
 import { initKineticText } from './kinetic-text.js'
 import { initIconDraw } from './icon-draw.js'
 import { initMarquee } from './marquee.js'
+import { initUnderwildGrid } from './underwild-grid.js'
 import {
   initCursor,
   initMagneticButtons,
@@ -24,6 +25,7 @@ initHeroParallax()
 initNavIndicator()
 initDraggableSticker()
 initHeroScrollFade()
+initUnderwildGrid()
 
 // ---------- nav scroll state ----------
 const nav = document.querySelector('.nav')
