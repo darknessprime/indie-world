@@ -7,7 +7,7 @@ export function initMarquee() {
     track.style.animation = 'none'
     const anim = animate(track, {
       translateX: ['0%', '-50%'],
-      duration: 30000,
+      duration: 55000,
       loop: true,
       ease: 'linear',
     })

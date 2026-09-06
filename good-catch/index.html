@@ -38,8 +38,8 @@
     </a>
     <nav class="nav__links">
       <span class="nav__indicator" aria-hidden="true"></span>
-      <a href="#features">Features</a>
       <a href="#world">World</a>
+      <a href="#loop">The Loop</a>
       <a href="#characters">Characters</a>
       <a href="#gallery">Gallery</a>
       <a href="#studio">Studio</a>
@@ -54,8 +54,8 @@
 <!-- ============ CURTAIN NAV ============ -->
 <div class="curtain-nav" id="curtain-nav">
   <div class="curtain-nav__links">
-    <a href="#features">Features<img src="/press/ss1.jpg" alt="" /></a>
     <a href="#world">World<img src="/press/ss4.jpg" alt="" /></a>
+    <a href="#loop">The Loop<img src="/press/ss1.jpg" alt="" /></a>
     <a href="#characters">Characters<img src="/press/ss6.jpg" alt="" /></a>
     <a href="#gallery">Gallery<img src="/press/ss8.jpg" alt="" /></a>
     <a href="#studio">Studio<img src="/press/header.jpg" alt="" /></a>
@@ -95,63 +95,24 @@
     </div>
   </section>
 
-  <!-- ============ MARQUEE ============ -->
-  <section class="marquee">
-    <div class="marquee__track">
-      <span>Cozy <em>·</em> Fishing <em>·</em> Creature Collector <em>·</em> Wholesome <em>·</em> Relaxing <em>·</em> Adventure <em>·</em> Casual <em>·</em></span>
+  <!-- ============ CAST: THE FIRST MOVE, BEFORE ANY COPY ============ -->
+  <section class="section section--tight" id="cast">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow" style="justify-content:center;">Try It First</div>
+        <h2 data-kinetic>Go ahead, cast</h2>
+        <p data-reveal>Hover to find your spot, then click to cast in and watch the ripple spread.</p>
+      </div>
+      <div class="pond-grid-wrap" data-reveal>
+        <div class="pond-grid" id="pond-grid"></div>
+      </div>
     </div>
   </section>
 
-  <!-- ============ FEATURES ============ -->
-  <section class="section" id="features">
-    <div class="container">
-      <div class="section-head">
-        <div class="eyebrow" style="justify-content:center;">What You'll Do</div>
-        <h2 data-kinetic>Everything about it is built to help you unwind</h2>
-        <p data-reveal>A chill loop of casting, exploring, and collecting — no timers, no pressure.</p>
-      </div>
-      <div class="ticket-grid">
-        <div class="ticket-card" data-reveal data-reveal-group="features">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 12c0-3 2-9 5.5-9s5.5 6 5.5 9-2 9-5.5 9-5.5-6-5.5-9z"/></svg></div>
-          <h3>Chill Fishing Minigame</h3>
-          <p>Cast, wait for the tug, and reel it in — no stress, just a satisfying little rhythm.</p>
-        </div>
-        <div class="ticket-card" data-reveal data-reveal-group="features">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1M2 12h20"/></svg></div>
-          <h3>Explore Fishing Spots</h3>
-          <p>Rivers, lakes, and more — each spot has its own vibe and its own fish to discover.</p>
-        </div>
-        <div class="ticket-card" data-reveal data-reveal-group="features">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg></div>
-          <h3>Fun Little Quests</h3>
-          <p>Pick up orders around town and deliver the right catch for a tidy reward.</p>
-        </div>
-        <div class="ticket-card" data-reveal data-reveal-group="features">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/><circle cx="12" cy="12" r="3"/></svg></div>
-          <h3>Skills, Rods & Bait</h3>
-          <p>Level up a small skill tree, upgrade your rod, and try different bait for different fish.</p>
-        </div>
-        <div class="ticket-card" data-reveal data-reveal-group="features">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
-          <h3>Discover Rare Fish</h3>
-          <p>Build a collection — most are common, but keep an eye out for the rare variants.</p>
-        </div>
-        <div class="ticket-card" data-reveal data-reveal-group="features">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
-          <h3>Animal Buddies</h3>
-          <p>Unlock cute animal characters as you play — each one brings its own fishing ability.</p>
-        </div>
-        <div class="ticket-card" data-reveal data-reveal-group="features">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></div>
-          <h3>Perfect Catches</h3>
-          <p>Time your reel just right for a perfect catch — extra rewards, extra energy back.</p>
-        </div>
-        <div class="ticket-card" data-reveal data-reveal-group="features">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c4.97 0 9-3.58 9-8 0-2-1-4-3-5.5C16.5 6 15 4 12 2 9 4 7.5 6 6 8.5 4 10 3 12 3 14c0 4.42 4.03 8 9 8z"/></svg></div>
-          <h3>Zero Pressure</h3>
-          <p>No fail states to stress about — adjustable difficulty and no timed input required.</p>
-        </div>
-      </div>
+  <!-- ============ MARQUEE: a quiet breath while the ripple settles ============ -->
+  <section class="marquee">
+    <div class="marquee__track">
+      <span>Cozy <em>·</em> Fishing <em>·</em> Creature Collector <em>·</em> Wholesome <em>·</em> Relaxing <em>·</em> Adventure <em>·</em> Casual <em>·</em></span>
     </div>
   </section>
 
@@ -160,8 +121,8 @@
     <div class="container">
       <div class="section-head">
         <div class="eyebrow" style="justify-content:center;">Fishing Spots</div>
-        <h2 data-kinetic>Every spot has its own vibe</h2>
-        <p data-reveal>Drag sideways to look around. Each location has its own fish to discover.</p>
+        <h2 data-kinetic>Now, somewhere to sit</h2>
+        <p data-reveal>Drag sideways to look around. Every spot has its own vibe, and its own fish to discover.</p>
       </div>
     </div>
     <div class="spot-track-wrap" data-reveal>
@@ -186,13 +147,66 @@
     </div>
   </section>
 
+  <!-- ============ THE LOOP (what actually fills the quiet time) ============ -->
+  <section class="section" id="loop">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow" style="justify-content:center;">Once You're There</div>
+        <h2 data-kinetic>This is the whole day</h2>
+        <p data-reveal>A chill loop of casting, exploring, and collecting — no timers, no pressure.</p>
+      </div>
+      <div class="ticket-grid">
+        <div class="ticket-card" data-reveal data-reveal-group="loop">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 12c0-3 2-9 5.5-9s5.5 6 5.5 9-2 9-5.5 9-5.5-6-5.5-9z"/></svg></div>
+          <h3>Chill Fishing Minigame</h3>
+          <p>Cast, wait for the tug, and reel it in — no stress, just a satisfying little rhythm.</p>
+        </div>
+        <div class="ticket-card" data-reveal data-reveal-group="loop">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1M2 12h20"/></svg></div>
+          <h3>Explore Fishing Spots</h3>
+          <p>Rivers, lakes, and more — each spot has its own vibe and its own fish to discover.</p>
+        </div>
+        <div class="ticket-card" data-reveal data-reveal-group="loop">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg></div>
+          <h3>Fun Little Quests</h3>
+          <p>Pick up orders around town and deliver the right catch for a tidy reward.</p>
+        </div>
+        <div class="ticket-card" data-reveal data-reveal-group="loop">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <h3>Skills, Rods & Bait</h3>
+          <p>Level up a small skill tree, upgrade your rod, and try different bait for different fish.</p>
+        </div>
+        <div class="ticket-card" data-reveal data-reveal-group="loop">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+          <h3>Discover Rare Fish</h3>
+          <p>Build a collection — most are common, but keep an eye out for the rare variants.</p>
+        </div>
+        <div class="ticket-card" data-reveal data-reveal-group="loop">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
+          <h3>Animal Buddies</h3>
+          <p>Unlock cute animal characters as you play — each one brings its own fishing ability.</p>
+        </div>
+        <div class="ticket-card" data-reveal data-reveal-group="loop">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></div>
+          <h3>Perfect Catches</h3>
+          <p>Time your reel just right for a perfect catch — extra rewards, extra energy back.</p>
+        </div>
+        <div class="ticket-card" data-reveal data-reveal-group="loop">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c4.97 0 9-3.58 9-8 0-2-1-4-3-5.5C16.5 6 15 4 12 2 9 4 7.5 6 6 8.5 4 10 3 12 3 14c0 4.42 4.03 8 9 8z"/></svg></div>
+          <h3>Zero Pressure</h3>
+          <p>No fail states to stress about — adjustable difficulty and no timed input required.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ CHARACTERS (FLIP transition) ============ -->
   <section class="section" id="characters">
     <div class="container">
       <div class="section-head">
-        <div class="eyebrow" style="justify-content:center;">Meet Your Buddies</div>
-        <h2 data-kinetic>Everyone brings their own fishing ability</h2>
-        <p data-reveal>Click a character to take a closer look. More are still being revealed before launch.</p>
+        <div class="eyebrow" style="justify-content:center;">Not Just Fish</div>
+        <h2 data-kinetic>The company you keep</h2>
+        <p data-reveal>Everyone brings their own fishing ability. Click a character for a closer look — more are still being revealed before launch.</p>
       </div>
       <div class="char-grid" id="char-grid">
         <button class="char-card" data-reveal data-reveal-group="chars" data-char="bear">
@@ -227,8 +241,8 @@
   <section class="section" id="gallery">
     <div class="container">
       <div class="section-head">
-        <div class="eyebrow" style="justify-content:center;">See It In Motion</div>
-        <h2 data-kinetic>A peek at the frontier's calmest corner</h2>
+        <div class="eyebrow" style="justify-content:center;">More Moments</div>
+        <h2 data-kinetic>A few more quiet moments</h2>
       </div>
       <div class="gallery">
         <div class="gallery__item" data-reveal data-reveal-group="gallery"><img src="/press/ss2.jpg" alt="Fish collection screen" loading="lazy" /></div>
@@ -237,20 +251,6 @@
         <div class="gallery__item" data-reveal data-reveal-group="gallery"><img src="/press/ss6.jpg" alt="Character select" loading="lazy" /></div>
         <div class="gallery__item" data-reveal data-reveal-group="gallery"><img src="/press/ss8.jpg" alt="Quest orders" loading="lazy" /></div>
         <div class="gallery__item" data-reveal data-reveal-group="gallery"><img src="/press/ss9.jpg" alt="Fishing by the river" loading="lazy" /></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ RIPPLE TILE DEMO ============ -->
-  <section class="section section--tight" id="pond">
-    <div class="container">
-      <div class="section-head">
-        <div class="eyebrow" style="justify-content:center;">Try It Yourself</div>
-        <h2 data-kinetic>Every catch sends a ripple through the pond</h2>
-        <p data-reveal>Hover to scout a tile. Click one to send a pulse rippling outward.</p>
-      </div>
-      <div class="pond-grid-wrap" data-reveal>
-        <div class="pond-grid" id="pond-grid"></div>
       </div>
     </div>
   </section>
@@ -313,8 +313,8 @@
       <div class="footer__col">
         <h4>Game</h4>
         <ul>
-          <li><a href="#features">Features</a></li>
           <li><a href="#world">World</a></li>
+          <li><a href="#loop">The Loop</a></li>
           <li><a href="#characters">Characters</a></li>
         </ul>
       </div>

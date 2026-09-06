@@ -160,7 +160,7 @@ body[data-curtain="true"] .curtain-nav::before { opacity: 0.97; }
 /* ---------- MARQUEE ---------- */
 .marquee { border-top: 2px solid var(--c-border); border-bottom: 2px solid var(--c-border); overflow: hidden; padding: 20px 0; background: var(--c-surface); }
 .marquee__track { display: flex; gap: 50px; width: max-content; }
-.marquee__track span { font-family: var(--f-display); font-weight: 600; font-size: 18px; color: var(--c-ink-dim); display: flex; align-items: center; gap: 50px; white-space: nowrap; }
+.marquee__track span { font-family: var(--f-display); font-weight: 600; font-size: 15px; color: var(--c-ink-dim); opacity: 0.75; display: flex; align-items: center; gap: 50px; white-space: nowrap; }
 .marquee__track span em { color: var(--c-gold); font-style: normal; }
 
 /* ---------- SECTION HEAD ---------- */
