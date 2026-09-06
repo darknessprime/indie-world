@@ -7,7 +7,10 @@
 
 import { SecondOrderDynamics } from './second-order.js'
 
-const SIZES_BASE = [10, 11, 10.2, 9, 7.6, 6.2, 4.8, 3.4, 2.2]
+// Widest just behind the head, tapering to a narrow peduncle before the
+// tail - a rounded nose and a curved taper, not a linear wedge, is what
+// actually reads as "fish" instead of "triangle".
+const SIZES_BASE = [6.5, 10.5, 12, 11.2, 9.4, 7, 4.8, 3, 1.8]
 const PALETTES = [
   { body: '#f0a93a', belly: '#fffaf0', eye: '#4a3c2e' },
   { body: '#7c9a6b', belly: '#eef3e6', eye: '#3a3c2e' },
@@ -52,6 +55,21 @@ function updateChain(points, desiredDistance, maxAngle) {
   }
 }
 
+// Draws a smooth curve through a polyline by quadratic-curving to the
+// midpoint of each consecutive pair - turns a faceted polygon into an
+// organic outline without needing a full spline library.
+function smoothPathInto(ctx, pts, reverse) {
+  const seq = reverse ? [...pts].reverse() : pts
+  for (let i = 0; i < seq.length - 1; i++) {
+    const p = seq[i]
+    const next = seq[i + 1]
+    const mx = (p.x + next.x) / 2
+    const my = (p.y + next.y) / 2
+    ctx.quadraticCurveTo(p.x, p.y, mx, my)
+  }
+  ctx.lineTo(seq[seq.length - 1].x, seq[seq.length - 1].y)
+}
+
 function drawFish(ctx, fish, t) {
   const { points, sizes, palette, cheer } = fish
   const top = []
@@ -70,27 +88,61 @@ function drawFish(ctx, fish, t) {
     bottom.push({ x: p.x - nx * size, y: p.y - ny * size })
   }
 
-  ctx.beginPath()
-  ctx.moveTo(top[0].x, top[0].y)
-  for (let i = 1; i < top.length; i++) ctx.lineTo(top[i].x, top[i].y)
   const tail = points[points.length - 1]
   const tailPrev = points[points.length - 2]
   const tailAngle = Math.atan2(tail.y - tailPrev.y, tail.x - tailPrev.x)
-  const finWag = Math.sin(t * 7 + fish.phase) * 0.5
-  const finLen = 13 + cheer * 4
-  ctx.lineTo(tail.x + Math.cos(tailAngle + 0.5 + finWag) * finLen, tail.y + Math.sin(tailAngle + 0.5 + finWag) * finLen)
-  ctx.lineTo(tail.x, tail.y)
-  ctx.lineTo(tail.x + Math.cos(tailAngle - 0.5 + finWag) * finLen, tail.y + Math.sin(tailAngle - 0.5 + finWag) * finLen)
-  for (let i = bottom.length - 1; i >= 0; i--) ctx.lineTo(bottom[i].x, bottom[i].y)
+  const finWag = Math.sin(t * 7 + fish.phase) * 0.4
+  const finLen = 15 + cheer * 4
+  const lobeSpread = 0.55
+
+  // Forked tail: two curved lobes meeting at a notch behind the peduncle.
+  const tailBase = { x: tail.x + Math.cos(tailAngle) * 3, y: tail.y + Math.sin(tailAngle) * 3 }
+  const lobeTopTip = {
+    x: tailBase.x + Math.cos(tailAngle + lobeSpread + finWag) * finLen,
+    y: tailBase.y + Math.sin(tailAngle + lobeSpread + finWag) * finLen,
+  }
+  const lobeBottomTip = {
+    x: tailBase.x + Math.cos(tailAngle - lobeSpread + finWag) * finLen,
+    y: tailBase.y + Math.sin(tailAngle - lobeSpread + finWag) * finLen,
+  }
+  const notch = {
+    x: tailBase.x + Math.cos(tailAngle) * finLen * 0.45,
+    y: tailBase.y + Math.sin(tailAngle) * finLen * 0.45,
+  }
+
+  ctx.beginPath()
+  ctx.moveTo(top[0].x, top[0].y)
+  smoothPathInto(ctx, top, false)
+  ctx.quadraticCurveTo(tail.x, tail.y, lobeTopTip.x, lobeTopTip.y)
+  ctx.quadraticCurveTo(notch.x, notch.y, lobeBottomTip.x, lobeBottomTip.y)
+  ctx.quadraticCurveTo(tail.x, tail.y, bottom[bottom.length - 1].x, bottom[bottom.length - 1].y)
+  smoothPathInto(ctx, bottom, true)
   ctx.closePath()
   ctx.fillStyle = palette.body
   ctx.fill()
 
+  // Dorsal fin - a small curved bump on the back, roughly a third of the
+  // way down the body, is what makes the silhouette read as "fish".
+  const dorsalBase = points[2]
+  const dorsalNormal = top[2]
+  const dorsalTip = {
+    x: dorsalBase.x + (dorsalNormal.x - dorsalBase.x) * 2.1,
+    y: dorsalBase.y + (dorsalNormal.y - dorsalBase.y) * 2.1,
+  }
+  ctx.beginPath()
+  ctx.moveTo(points[1].x + (top[1].x - points[1].x) * 0.7, points[1].y + (top[1].y - points[1].y) * 0.7)
+  ctx.quadraticCurveTo(dorsalTip.x, dorsalTip.y, top[3].x, top[3].y)
+  ctx.closePath()
+  ctx.fillStyle = palette.body
+  ctx.fill()
+
+  // Belly highlight, curved to match the body rather than a straight stroke.
   ctx.beginPath()
   ctx.moveTo(bottom[0].x, bottom[0].y)
-  for (let i = 1; i < Math.min(bottom.length, 5); i++) ctx.lineTo(bottom[i].x, bottom[i].y)
+  smoothPathInto(ctx, bottom.slice(0, 5), false)
   ctx.strokeStyle = palette.belly
-  ctx.lineWidth = sizes[0] * 0.3
+  ctx.lineWidth = sizes[0] * 0.32
+  ctx.lineCap = 'round'
   ctx.stroke()
 
   const head = points[0]
@@ -100,9 +152,9 @@ function drawFish(ctx, fish, t) {
   const headLen = Math.hypot(headDx, headDy) || 1
   const enx = -headDy / headLen
   const eny = headDx / headLen
-  const eyeOffset = sizes[0] * 0.5
+  const eyeOffset = sizes[0] * 0.45
   ctx.beginPath()
-  ctx.arc(head.x + enx * eyeOffset, head.y + eny * eyeOffset, 1.4 + cheer * 0.5, 0, Math.PI * 2)
+  ctx.arc(head.x + enx * eyeOffset, head.y + eny * eyeOffset, 1.5 + cheer * 0.5, 0, Math.PI * 2)
   ctx.fillStyle = palette.eye
   ctx.fill()
 }
@@ -193,8 +245,8 @@ export function initWaterScene(canvas) {
   window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; hasMouse = true })
   window.addEventListener('mouseleave', () => { hasMouse = false })
 
-  const hookSodX = new SecondOrderDynamics(3.2, 0.7, 0, mouse.x)
-  const hookSodY = new SecondOrderDynamics(3.2, 0.7, 0, mouse.y)
+  const hookSodX = new SecondOrderDynamics(1.8, 0.9, 0, mouse.x)
+  const hookSodY = new SecondOrderDynamics(1.8, 0.9, 0, mouse.y)
 
   const bubbles = []
   window.addEventListener('click', (e) => {

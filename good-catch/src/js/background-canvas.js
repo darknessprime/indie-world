@@ -18,18 +18,18 @@ function makeCaustic(w, h) {
   }
 }
 
-function drawCaustic(ctx, c, t) {
+function drawCaustic(ctx, c, t, strength = 1) {
   const x = c.cx + Math.sin(t * c.fx + c.phase) * c.ax
   const y = c.cy + Math.cos(t * c.fy + c.phase) * c.ay
   const pulse = 0.5 + 0.5 * Math.sin(t * c.pulseSpeed + c.pulsePhase)
   const grad = ctx.createRadialGradient(x, y, 0, x, y, c.r)
-  grad.addColorStop(0, `rgba(255,255,255,${0.10 + pulse * 0.08})`)
+  grad.addColorStop(0, `rgba(255,255,255,${(0.10 + pulse * 0.08) * strength})`)
   grad.addColorStop(1, 'rgba(255,255,255,0)')
   ctx.fillStyle = grad
   ctx.fillRect(x - c.r, y - c.r, c.r * 2, c.r * 2)
 }
 
-function drawWaveLines(ctx, w, h, t) {
+function drawWaveLines(ctx, w, h, t, strength = 1) {
   const rows = 7
   for (let i = 0; i < rows; i++) {
     const y = (h / rows) * i + (h / rows) * 0.5
@@ -39,11 +39,37 @@ function drawWaveLines(ctx, w, h, t) {
       if (x === 0) ctx.moveTo(x, y + wave)
       else ctx.lineTo(x, y + wave)
     }
-    ctx.strokeStyle = 'rgba(255,255,255,0.05)'
+    ctx.strokeStyle = `rgba(255,255,255,${0.05 * strength})`
     ctx.lineWidth = 2
     ctx.stroke()
   }
 }
+
+// Scroll position becomes depth: the water genuinely darkens as you go
+// down the page, like your line sinking further in - the site's structure
+// mirrors the one thing this whole game is about, instead of just being a
+// row of sections wearing a fishing palette.
+const SHALLOW = [234, 245, 241]
+const MID = [163, 210, 200]
+const DEEP = [42, 78, 84]
+const ABYSS = [22, 40, 46]
+
+function lerp3(a, b, t) {
+  return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]
+}
+
+function depthColors(progress) {
+  if (progress < 0.5) {
+    const top = lerp3(SHALLOW, MID, progress / 0.5)
+    const mid = lerp3(MID, DEEP, progress / 0.5)
+    const bottom = lerp3(MID, DEEP, Math.min(progress / 0.5 + 0.3, 1))
+    return { top, mid, bottom }
+  }
+  const p = (progress - 0.5) / 0.5
+  return { top: lerp3(MID, DEEP, p), mid: lerp3(DEEP, ABYSS, p), bottom: lerp3(DEEP, ABYSS, Math.min(p + 0.3, 1)) }
+}
+
+function rgbStr(c) { return `rgb(${c[0] | 0}, ${c[1] | 0}, ${c[2] | 0})` }
 
 function makeBubble(w, h) {
   return {
@@ -62,7 +88,8 @@ export function initBackgroundCanvas(canvas) {
   const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
   let caustics = []
   let bubbles = []
-  let gradient = null
+  let scrollProgress = 0
+  let smoothProgress = 0
 
   function resize() {
     w = window.innerWidth
@@ -72,13 +99,16 @@ export function initBackgroundCanvas(canvas) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     caustics = Array.from({ length: 6 }, () => makeCaustic(w, h))
     bubbles = Array.from({ length: 22 }, () => makeBubble(w, h))
-    gradient = ctx.createLinearGradient(0, 0, 0, h)
-    gradient.addColorStop(0, '#eaf5f1')
-    gradient.addColorStop(0.45, '#cfe8e2')
-    gradient.addColorStop(1, '#a3d2c8')
   }
   resize()
   window.addEventListener('resize', resize)
+
+  function updateScrollProgress() {
+    const max = document.body.scrollHeight - window.innerHeight
+    scrollProgress = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0
+  }
+  updateScrollProgress()
+  window.addEventListener('scroll', updateScrollProgress, { passive: true })
 
   let rafId
   const start = performance.now()
@@ -86,11 +116,21 @@ export function initBackgroundCanvas(canvas) {
     const t = (now - start) / 1000
     ctx.clearRect(0, 0, w, h)
 
+    // Ease toward the real scroll depth slowly - an abrupt color jump would
+    // read as a glitch, a slow settle reads as sinking.
+    smoothProgress += (scrollProgress - smoothProgress) * 0.04
+
+    const { top, mid, bottom } = depthColors(smoothProgress)
+    const gradient = ctx.createLinearGradient(0, 0, 0, h)
+    gradient.addColorStop(0, rgbStr(top))
+    gradient.addColorStop(0.45, rgbStr(mid))
+    gradient.addColorStop(1, rgbStr(bottom))
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, w, h)
 
-    caustics.forEach((c) => drawCaustic(ctx, c, t))
-    drawWaveLines(ctx, w, h, t)
+    const causticStrength = 1 - smoothProgress * 0.7
+    caustics.forEach((c) => drawCaustic(ctx, c, t, causticStrength))
+    drawWaveLines(ctx, w, h, t, causticStrength)
 
     bubbles.forEach((b) => {
       b.y -= b.speed

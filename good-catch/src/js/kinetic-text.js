@@ -11,11 +11,10 @@ export function initKineticText() {
     el.classList.add('is-split')
     const alreadyVisible = isAlreadyInView(el)
     animate(splitter.words, {
-      translateY: ['115%', '0%'],
-      rotateZ: [4, 0],
-      duration: 950,
-      delay: stagger(45),
-      ease: 'outExpo',
+      translateY: ['110%', '0%'],
+      duration: 1500,
+      delay: stagger(80),
+      ease: 'outQuad',
       autoplay: alreadyVisible
         ? true
         : onScroll({ target: el, enter: 'bottom-=60 top' }),

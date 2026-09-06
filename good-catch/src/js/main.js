@@ -64,16 +64,16 @@ function initReveals() {
     if (isGallery) {
       animate(els, {
         clipPath: ['inset(0 0 100% 0)', 'inset(0% 0 0% 0)'],
-        duration: 1000,
-        delay: stagger(90),
-        ease: 'outExpo',
+        duration: 1500,
+        delay: stagger(140),
+        ease: 'outQuad',
         autoplay,
       })
       animate(els.map((el) => el.querySelector('img')), {
-        scale: [1.18, 1],
-        duration: 1100,
-        delay: stagger(90),
-        ease: 'outExpo',
+        scale: [1.1, 1],
+        duration: 1600,
+        delay: stagger(140),
+        ease: 'outQuad',
         autoplay: alreadyVisible ? true : onScroll({ target: els[0], enter: 'bottom-=40 top' }),
       })
       return
@@ -81,10 +81,10 @@ function initReveals() {
 
     animate(els, {
       opacity: [0, 1],
-      translateY: [28, 0],
-      duration: 900,
-      delay: stagger(90),
-      ease: 'outQuart',
+      translateY: [16, 0],
+      duration: 1400,
+      delay: stagger(130),
+      ease: 'outQuad',
       autoplay,
     })
   })

@@ -15,29 +15,29 @@ export function initMagneticButtons() {
       el.style.transform = `translate(${tx}px, ${ty}px) scale(${pressed ? 0.94 : 1})`
     }
     el.addEventListener('mouseenter', () => {
-      el.style.transition = 'transform 0.15s ease-out'
+      el.style.transition = 'transform 0.3s ease-out'
     })
     el.addEventListener('mousemove', (e) => {
       const r = el.getBoundingClientRect()
-      tx = (e.clientX - (r.left + r.width / 2)) * 0.28
-      ty = (e.clientY - (r.top + r.height / 2)) * 0.32
+      tx = (e.clientX - (r.left + r.width / 2)) * 0.14
+      ty = (e.clientY - (r.top + r.height / 2)) * 0.16
       apply()
     })
     el.addEventListener('mousedown', () => {
       pressed = true
-      el.style.transition = 'transform 0.1s ease-out'
+      el.style.transition = 'transform 0.15s ease-out'
       apply()
     })
     el.addEventListener('mouseup', () => {
       pressed = false
-      el.style.transition = 'transform 0.25s ease-out'
+      el.style.transition = 'transform 0.35s ease-out'
       apply()
     })
     el.addEventListener('mouseleave', () => {
       tx = 0
       ty = 0
       pressed = false
-      el.style.transition = 'transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1)'
+      el.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)'
       apply()
     })
   })
@@ -55,17 +55,17 @@ export function initCardTilt() {
       const r = card.getBoundingClientRect()
       const px = (e.clientX - r.left) / r.width
       const py = (e.clientY - r.top) / r.height
-      const rx = (py - 0.5) * -10
-      const ry = (px - 0.5) * 10
-      card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`
-      glare.style.background = `radial-gradient(circle at ${px * 100}% ${py * 100}%, rgba(255,255,255,0.55), transparent 60%)`
+      const rx = (py - 0.5) * -4
+      const ry = (px - 0.5) * 4
+      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-3px)`
+      glare.style.background = `radial-gradient(circle at ${px * 100}% ${py * 100}%, rgba(255,255,255,0.4), transparent 65%)`
     })
     card.addEventListener('mouseleave', () => {
       card.classList.remove('is-tilting')
-      card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s, box-shadow 0.35s'
+      card.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s, box-shadow 0.35s'
       card.style.transform = ''
       glare.style.background = 'transparent'
-      setTimeout(() => { card.style.transition = '' }, 520)
+      setTimeout(() => { card.style.transition = '' }, 720)
     })
   })
 }
