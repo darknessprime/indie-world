@@ -71,6 +71,35 @@ function depthColors(progress) {
 
 function rgbStr(c) { return `rgb(${c[0] | 0}, ${c[1] | 0}, ${c[2] | 0})` }
 
+// A small ripple wherever the page is clicked - two staggered expanding
+// rings that fade out, like a real stone dropped in still water. The canvas
+// is `position: fixed`, so client coordinates line up with it directly
+// regardless of scroll.
+const RIPPLE_LIFE = 900
+const RIPPLE_MAX_R = 46
+
+function drawRipple(ctx, r, now) {
+  // Clamp to 0: a click's performance.now() can land a hair after the
+  // rAF timestamp of the very next frame, which would otherwise make
+  // this briefly negative and throw on ctx.arc's radius.
+  const age = Math.max(0, (now - r.start) / RIPPLE_LIFE)
+  if (age >= 1) return
+  ctx.beginPath()
+  ctx.arc(r.x, r.y, age * RIPPLE_MAX_R, 0, Math.PI * 2)
+  ctx.strokeStyle = `rgba(255,255,255,${(1 - age) * 0.5})`
+  ctx.lineWidth = 2 * (1 - age) + 0.4
+  ctx.stroke()
+
+  const age2 = age - 0.18
+  if (age2 > 0) {
+    ctx.beginPath()
+    ctx.arc(r.x, r.y, age2 * RIPPLE_MAX_R, 0, Math.PI * 2)
+    ctx.strokeStyle = `rgba(255,255,255,${(1 - age2) * 0.35})`
+    ctx.lineWidth = 1.5 * (1 - age2) + 0.4
+    ctx.stroke()
+  }
+}
+
 function makeBubble(w, h) {
   return {
     x: Math.random() * w,
@@ -88,8 +117,13 @@ export function initBackgroundCanvas(canvas) {
   const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
   let caustics = []
   let bubbles = []
+  let ripples = []
   let scrollProgress = 0
   let smoothProgress = 0
+
+  window.addEventListener('click', (e) => {
+    ripples.push({ x: e.clientX, y: e.clientY, start: performance.now() })
+  })
 
   function resize() {
     w = window.innerWidth
@@ -145,6 +179,9 @@ export function initBackgroundCanvas(canvas) {
       ctx.stroke()
     })
     ctx.globalAlpha = 1
+
+    ripples = ripples.filter((r) => now - r.start < RIPPLE_LIFE)
+    ripples.forEach((r) => drawRipple(ctx, r, now))
 
     rafId = requestAnimationFrame(tick)
   }

@@ -5,7 +5,6 @@ import { initPreloader } from './preloader.js'
 import { initKineticText } from './kinetic-text.js'
 import { initIconDraw } from './icon-draw.js'
 import { initMarquee } from './marquee.js'
-import { initPondGrid } from './pond-grid.js'
 import { initSpotTrack } from './spot-track.js'
 import { initCurtainNav } from './curtain-nav.js'
 import { initCharFlip } from './char-flip.js'
@@ -94,7 +93,6 @@ initPreloader(() => {
   initKineticText()
   initReveals()
   initIconDraw()
-  initPondGrid()
 })
 
 // ---------- gentle hover bounce on cards (feature-card / char-card have their own tilt/hover) ----------
