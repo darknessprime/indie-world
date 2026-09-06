@@ -6,6 +6,7 @@ import { initKineticText } from './kinetic-text.js'
 import { initIconDraw } from './icon-draw.js'
 import { initMarquee } from './marquee.js'
 import { initPondGrid } from './pond-grid.js'
+import { initSpotTrack } from './spot-track.js'
 import { initCurtainNav } from './curtain-nav.js'
 import { initCharFlip } from './char-flip.js'
 import {
@@ -29,6 +30,7 @@ initDraggableSticker()
 initHeroScrollFade()
 initCurtainNav()
 initCharFlip()
+initSpotTrack()
 
 // ---------- nav scroll state ----------
 const nav = document.querySelector('.nav')

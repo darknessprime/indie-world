@@ -6,9 +6,9 @@ function isAlreadyInView(el) {
 }
 
 export function initIconDraw() {
-  document.querySelectorAll('.feature-card .icon svg').forEach((svg) => {
+  document.querySelectorAll('.ticket-card .icon svg').forEach((svg) => {
     const shapes = createDrawable(svg.querySelectorAll('path, circle, rect, line, polyline, polygon'))
-    const card = svg.closest('.feature-card')
+    const card = svg.closest('.ticket-card')
     const alreadyVisible = isAlreadyInView(card)
     animate(shapes, {
       draw: ['0 0', '0 1'],

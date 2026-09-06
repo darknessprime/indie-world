@@ -23,7 +23,7 @@ export function initCursor() {
     dot.style.transform = `translate(${mouse.x}px, ${mouse.y}px) translate(-50%, -50%)`
   })
 
-  document.querySelectorAll('a, button, .btn, .feature-card, .gallery__item, .studio-card, .char-card').forEach((el) => {
+  document.querySelectorAll('a, button, .btn, .ticket-card, .gallery__item, .studio-card, .char-card, .spot-card').forEach((el) => {
     el.addEventListener('mouseenter', () => ring.classList.add('is-hover'))
     el.addEventListener('mouseleave', () => ring.classList.remove('is-hover'))
   })
@@ -76,7 +76,7 @@ export function initMagneticButtons() {
 
 export function initCardTilt() {
   if (!isFinePointer()) return
-  document.querySelectorAll('.feature-card, .char-card').forEach((card) => {
+  document.querySelectorAll('.ticket-card, .char-card').forEach((card) => {
     const glare = document.createElement('div')
     glare.className = 'card-glare'
     card.appendChild(glare)

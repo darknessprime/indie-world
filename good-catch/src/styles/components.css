@@ -168,24 +168,38 @@ body[data-curtain="true"] .curtain-nav::before { opacity: 0.97; }
 .section-head h2 { font-size: clamp(30px, 4.4vw, 46px); }
 .section-head p { color: var(--c-ink-dim); font-size: 17px; margin-top: 16px; }
 
-/* ---------- FEATURE CARDS ---------- */
-.feature-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
-.feature-card {
+/* ---------- QUEST TICKET CARDS ---------- */
+/* Jagged stamp/ticket silhouette, pulled from the game's own "orders" UI,
+   instead of a plain rounded rectangle. Cards sit slightly askew at rest
+   like a scattered pile of tickets and straighten on hover. */
+.ticket-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 34px 22px; }
+.ticket-card {
   position: relative; overflow: hidden;
-  background: var(--c-surface); border: 2px solid var(--c-border); border-radius: var(--radius);
-  padding: 30px 26px; transition: border-color 0.3s, box-shadow 0.35s;
+  background: var(--c-surface); border: 2px dashed var(--c-border-strong);
+  clip-path: polygon(
+    0% 6%, 10% 0%, 20% 6%, 30% 0%, 40% 6%, 50% 0%, 60% 6%, 70% 0%, 80% 6%, 90% 0%, 100% 6%,
+    100% 94%, 90% 100%, 80% 94%, 70% 100%, 60% 94%, 50% 100%, 40% 94%, 30% 100%, 20% 94%, 10% 100%, 0% 94%
+  );
+  padding: 34px 26px 30px;
+  transition: border-color 0.3s, box-shadow 0.35s, transform 0.3s var(--ease);
 }
-.feature-card:hover { border-color: var(--c-olive-dark); box-shadow: 0 16px 30px -14px rgba(74,60,46,0.2); }
-.feature-card.is-tilting { transition: border-color 0.3s, box-shadow 0.35s, transform 0.12s ease-out; }
-.card-glare { position: absolute; inset: 0; pointer-events: none; border-radius: inherit; mix-blend-mode: overlay; }
-.feature-card .icon { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; margin-bottom: 20px; }
-.feature-card .icon svg { width: 26px; height: 26px; }
-.feature-card:nth-child(4n+1) .icon { background: var(--c-olive-dim); color: var(--c-olive-dark); }
-.feature-card:nth-child(4n+2) .icon { background: var(--c-gold-dim); color: var(--c-gold); }
-.feature-card:nth-child(4n+3) .icon { background: var(--c-teal-dim); color: var(--c-teal); }
-.feature-card:nth-child(4n+4) .icon { background: var(--c-brown-dim); color: var(--c-brown); }
-.feature-card h3 { font-size: 18px; margin-bottom: 10px; }
-.feature-card p { font-size: 14.5px; color: var(--c-ink-dim); margin: 0; }
+.ticket-card:nth-child(6n+1) { transform: rotate(-1.4deg); }
+.ticket-card:nth-child(6n+2) { transform: rotate(1deg); }
+.ticket-card:nth-child(6n+3) { transform: rotate(-0.6deg); }
+.ticket-card:nth-child(6n+4) { transform: rotate(1.6deg); }
+.ticket-card:nth-child(6n+5) { transform: rotate(-1.1deg); }
+.ticket-card:nth-child(6n+6) { transform: rotate(0.7deg); }
+.ticket-card:hover { border-color: var(--c-olive-dark); box-shadow: 0 16px 30px -14px rgba(74,60,46,0.2); transform: rotate(0deg) translateY(-4px); }
+.ticket-card.is-tilting { transition: border-color 0.3s, box-shadow 0.35s, transform 0.12s ease-out; }
+.card-glare { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; }
+.ticket-card .icon { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; margin-bottom: 20px; }
+.ticket-card .icon svg { width: 26px; height: 26px; }
+.ticket-card:nth-child(4n+1) .icon { background: var(--c-olive-dim); color: var(--c-olive-dark); }
+.ticket-card:nth-child(4n+2) .icon { background: var(--c-gold-dim); color: var(--c-gold); }
+.ticket-card:nth-child(4n+3) .icon { background: var(--c-teal-dim); color: var(--c-teal); }
+.ticket-card:nth-child(4n+4) .icon { background: var(--c-brown-dim); color: var(--c-brown); }
+.ticket-card h3 { font-size: 18px; margin-bottom: 10px; }
+.ticket-card p { font-size: 14.5px; color: var(--c-ink-dim); margin: 0; }
 
 /* ---------- WORLD / SPLIT SECTIONS ---------- */
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
@@ -201,6 +215,46 @@ body[data-curtain="true"] .curtain-nav::before { opacity: 0.97; }
   padding: 9px 16px; font-size: 13.5px; font-weight: 600; font-family: var(--f-display);
 }
 .pill-list li svg { width: 15px; height: 15px; color: var(--c-olive-dark); }
+
+/* ---------- WORLD: DRAG-TO-SCROLL SPOT TRACK ---------- */
+.spot-track-wrap {
+  overflow: hidden;
+  padding: 10px 0 10px calc((100vw - min(1280px, 100vw - 80px)) / 2);
+  user-select: none;
+}
+.spot-track {
+  display: flex;
+  gap: 22px;
+  width: max-content;
+  will-change: transform;
+}
+.spot-card {
+  position: relative;
+  width: 340px; height: 400px;
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 6px solid var(--c-surface);
+  box-shadow: 0 20px 40px -18px rgba(74,60,46,0.3);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s;
+}
+.spot-card:hover { transform: translateY(-6px); box-shadow: 0 26px 48px -18px rgba(74,60,46,0.4); }
+.spot-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.spot-card--locked { background: var(--c-surface-2); display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.spot-card__lock { font-size: 44px; margin-bottom: 14px; opacity: 0.6; }
+.spot-card__label {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 22px 22px 20px;
+  background: linear-gradient(to top, rgba(43,36,64,0.75), transparent);
+}
+.spot-card--locked .spot-card__label { position: static; background: none; text-align: center; }
+.spot-card__label h3 { color: #fff; font-size: 20px; margin-bottom: 4px; }
+.spot-card--locked .spot-card__label h3 { color: var(--c-ink); }
+.spot-card__label p { color: rgba(255,255,255,0.85); font-size: 13.5px; margin: 0; }
+.spot-card--locked .spot-card__label p { color: var(--c-ink-dim); }
+@media (max-width: 640px) {
+  .spot-card { width: 260px; height: 320px; }
+}
 
 /* ---------- CHARACTERS (FLIP) ---------- */
 .char-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
