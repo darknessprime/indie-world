@@ -6,37 +6,6 @@ import { animate, createDraggable, onScroll } from 'animejs'
 
 const isFinePointer = () => window.matchMedia('(pointer: fine)').matches
 
-export function initCursor() {
-  if (!isFinePointer()) return
-  document.documentElement.classList.add('has-custom-cursor')
-
-  const ring = document.getElementById('cursor-ring')
-  const dot = document.getElementById('cursor-dot')
-  if (!ring || !dot) return
-
-  const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 }
-  const ringPos = { ...mouse }
-
-  window.addEventListener('mousemove', (e) => {
-    mouse.x = e.clientX
-    mouse.y = e.clientY
-    dot.style.transform = `translate(${mouse.x}px, ${mouse.y}px) translate(-50%, -50%)`
-  })
-
-  document.querySelectorAll('a, button, .btn, .ticket-card, .gallery__item, .studio-card, .char-card, .spot-card').forEach((el) => {
-    el.addEventListener('mouseenter', () => ring.classList.add('is-hover'))
-    el.addEventListener('mouseleave', () => ring.classList.remove('is-hover'))
-  })
-
-  function tick() {
-    ringPos.x += (mouse.x - ringPos.x) * 0.22
-    ringPos.y += (mouse.y - ringPos.y) * 0.22
-    ring.style.transform = `translate(${ringPos.x}px, ${ringPos.y}px) translate(-50%, -50%)`
-    requestAnimationFrame(tick)
-  }
-  requestAnimationFrame(tick)
-}
-
 export function initMagneticButtons() {
   if (!isFinePointer()) return
   document.querySelectorAll('.btn').forEach((el) => {

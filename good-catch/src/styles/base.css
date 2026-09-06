@@ -132,24 +132,10 @@ main, header, footer { position: relative; z-index: 1; }
 }
 
 /* ---------- CUSTOM CURSOR ---------- */
+/* The fishing line + hook is drawn directly on #companion-canvas (see
+   water-scene.js), so this just hides the native OS cursor on devices
+   that get the canvas-drawn one. */
 html.has-custom-cursor, html.has-custom-cursor a, html.has-custom-cursor button { cursor: none; }
-.cursor-ring, .cursor-dot { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 400; }
-.cursor-ring {
-  width: 34px; height: 34px; border-radius: 50%;
-  border: 1.5px solid var(--c-ink);
-  mix-blend-mode: difference;
-  transform: translate(-50%, -50%);
-  transition: width 0.25s var(--ease), height 0.25s var(--ease), opacity 0.25s;
-  will-change: transform;
-}
-.cursor-ring.is-hover { width: 62px; height: 62px; }
-.cursor-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--c-gold);
-  transform: translate(-50%, -50%);
-  will-change: transform;
-}
-html:not(.has-custom-cursor) .cursor-ring, html:not(.has-custom-cursor) .cursor-dot { display: none; }
 
 @media (max-width: 900px) {
   .container { padding: 0 22px; }

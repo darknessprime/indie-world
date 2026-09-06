@@ -1,6 +1,6 @@
 import { animate, stagger, onScroll } from 'animejs'
 import { initBackgroundCanvas } from './background-canvas.js'
-import { initFishCompanion } from './fish-companion.js'
+import { initWaterScene } from './water-scene.js'
 import { initPreloader } from './preloader.js'
 import { initKineticText } from './kinetic-text.js'
 import { initIconDraw } from './icon-draw.js'
@@ -10,7 +10,6 @@ import { initSpotTrack } from './spot-track.js'
 import { initCurtainNav } from './curtain-nav.js'
 import { initCharFlip } from './char-flip.js'
 import {
-  initCursor,
   initMagneticButtons,
   initCardTilt,
   initHeroParallax,
@@ -20,8 +19,7 @@ import {
 } from './interactions.js'
 
 initBackgroundCanvas(document.getElementById('bg-canvas'))
-initFishCompanion(document.getElementById('companion-canvas'))
-initCursor()
+initWaterScene(document.getElementById('companion-canvas'))
 initMagneticButtons()
 initCardTilt()
 initHeroParallax()

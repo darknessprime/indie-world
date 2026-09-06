@@ -1,52 +1,48 @@
-// A soft, organic floating-blob background driven entirely by trig math -
-// no WebGL/Three.js needed for a cozy 2D game site like this.
+// A water-surface backdrop: a vertical depth gradient, drifting "caustic"
+// light patches (soft radial glows that wander and pulse, standing in for
+// refracted sunlight through water), a faint moving wave-line texture, and
+// rising bubbles. Pure canvas math, no WebGL.
 
-const PALETTE = ['#a8c04e', '#f0a93a', '#7fb8b0', '#a9773f']
-
-function makeBlob(w, h, i) {
-  const baseR = 40 + Math.random() * 90
+function makeCaustic(w, h) {
   return {
     cx: Math.random() * w,
     cy: Math.random() * h,
+    r: 90 + Math.random() * 160,
     ax: 60 + Math.random() * 120,
-    ay: 40 + Math.random() * 100,
-    fx: 0.05 + Math.random() * 0.08,
-    fy: 0.04 + Math.random() * 0.07,
+    ay: 40 + Math.random() * 90,
+    fx: 0.03 + Math.random() * 0.04,
+    fy: 0.025 + Math.random() * 0.035,
     phase: Math.random() * Math.PI * 2,
-    radius: baseR,
-    wobbleAmp: baseR * (0.08 + Math.random() * 0.1),
-    wobbleFreq: 3 + Math.floor(Math.random() * 3),
-    wobbleSpeed: 0.3 + Math.random() * 0.4,
-    rotSpeed: (Math.random() - 0.5) * 0.15,
-    color: PALETTE[i % PALETTE.length],
-    opacity: 0.07 + Math.random() * 0.07,
+    pulseSpeed: 0.3 + Math.random() * 0.4,
+    pulsePhase: Math.random() * Math.PI * 2,
   }
 }
 
-function drawBlob(ctx, blob, t) {
-  const { cx, cy, ax, ay, fx, fy, phase, radius, wobbleAmp, wobbleFreq, wobbleSpeed, rotSpeed, color, opacity } = blob
-  const x = cx + Math.sin(t * fx + phase) * ax
-  const y = cy + Math.cos(t * fy + phase) * ay
-  const rot = t * rotSpeed
+function drawCaustic(ctx, c, t) {
+  const x = c.cx + Math.sin(t * c.fx + c.phase) * c.ax
+  const y = c.cy + Math.cos(t * c.fy + c.phase) * c.ay
+  const pulse = 0.5 + 0.5 * Math.sin(t * c.pulseSpeed + c.pulsePhase)
+  const grad = ctx.createRadialGradient(x, y, 0, x, y, c.r)
+  grad.addColorStop(0, `rgba(255,255,255,${0.10 + pulse * 0.08})`)
+  grad.addColorStop(1, 'rgba(255,255,255,0)')
+  ctx.fillStyle = grad
+  ctx.fillRect(x - c.r, y - c.r, c.r * 2, c.r * 2)
+}
 
-  ctx.save()
-  ctx.translate(x, y)
-  ctx.rotate(rot)
-  ctx.beginPath()
-  const steps = 48
-  for (let i = 0; i <= steps; i++) {
-    const angle = (i / steps) * Math.PI * 2
-    const r = radius + Math.sin(angle * wobbleFreq + t * wobbleSpeed) * wobbleAmp
-    const px = Math.cos(angle) * r
-    const py = Math.sin(angle) * r
-    if (i === 0) ctx.moveTo(px, py)
-    else ctx.lineTo(px, py)
+function drawWaveLines(ctx, w, h, t) {
+  const rows = 7
+  for (let i = 0; i < rows; i++) {
+    const y = (h / rows) * i + (h / rows) * 0.5
+    ctx.beginPath()
+    for (let x = 0; x <= w; x += 24) {
+      const wave = Math.sin(x * 0.02 + t * 0.6 + i * 1.3) * 5
+      if (x === 0) ctx.moveTo(x, y + wave)
+      else ctx.lineTo(x, y + wave)
+    }
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)'
+    ctx.lineWidth = 2
+    ctx.stroke()
   }
-  ctx.closePath()
-  ctx.fillStyle = color
-  ctx.globalAlpha = opacity
-  ctx.fill()
-  ctx.restore()
 }
 
 function makeBubble(w, h) {
@@ -54,7 +50,7 @@ function makeBubble(w, h) {
     x: Math.random() * w,
     y: Math.random() * h,
     r: 2 + Math.random() * 3,
-    speed: 0.12 + Math.random() * 0.22,
+    speed: 0.15 + Math.random() * 0.25,
     drift: (Math.random() - 0.5) * 0.3,
     phase: Math.random() * Math.PI * 2,
   }
@@ -62,9 +58,11 @@ function makeBubble(w, h) {
 
 export function initBackgroundCanvas(canvas) {
   const ctx = canvas.getContext('2d')
-  let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5)
-  let blobs = []
+  let w = 0, h = 0
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+  let caustics = []
   let bubbles = []
+  let gradient = null
 
   function resize() {
     w = window.innerWidth
@@ -72,9 +70,12 @@ export function initBackgroundCanvas(canvas) {
     canvas.width = w * dpr
     canvas.height = h * dpr
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-    const count = w < 700 ? 4 : 7
-    blobs = Array.from({ length: count }, (_, i) => makeBlob(w, h, i))
-    bubbles = Array.from({ length: 18 }, () => makeBubble(w, h))
+    caustics = Array.from({ length: 6 }, () => makeCaustic(w, h))
+    bubbles = Array.from({ length: 22 }, () => makeBubble(w, h))
+    gradient = ctx.createLinearGradient(0, 0, 0, h)
+    gradient.addColorStop(0, '#eaf5f1')
+    gradient.addColorStop(0.45, '#cfe8e2')
+    gradient.addColorStop(1, '#a3d2c8')
   }
   resize()
   window.addEventListener('resize', resize)
@@ -85,21 +86,25 @@ export function initBackgroundCanvas(canvas) {
     const t = (now - start) / 1000
     ctx.clearRect(0, 0, w, h)
 
-    blobs.forEach((b) => drawBlob(ctx, b, t))
+    ctx.fillStyle = gradient
+    ctx.fillRect(0, 0, w, h)
 
-    ctx.globalAlpha = 1
-    bubbles.forEach((s) => {
-      s.y -= s.speed
-      s.x += Math.sin(t * 0.6 + s.phase) * s.drift
-      if (s.y < -10) { s.y = h + 10; s.x = Math.random() * w }
-      const twinkle = 0.3 + 0.5 * (0.5 + 0.5 * Math.sin(t * 2 + s.phase))
+    caustics.forEach((c) => drawCaustic(ctx, c, t))
+    drawWaveLines(ctx, w, h, t)
+
+    bubbles.forEach((b) => {
+      b.y -= b.speed
+      b.x += Math.sin(t * 0.6 + b.phase) * b.drift
+      if (b.y < -10) { b.y = h + 10; b.x = Math.random() * w }
+      const twinkle = 0.3 + 0.5 * (0.5 + 0.5 * Math.sin(t * 2 + b.phase))
       ctx.beginPath()
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2)
-      ctx.strokeStyle = '#7fb8b0'
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2)
+      ctx.strokeStyle = 'rgba(255,255,255,0.5)'
       ctx.lineWidth = 1
-      ctx.globalAlpha = twinkle * 0.5
+      ctx.globalAlpha = twinkle * 0.6
       ctx.stroke()
     })
+    ctx.globalAlpha = 1
 
     rafId = requestAnimationFrame(tick)
   }
